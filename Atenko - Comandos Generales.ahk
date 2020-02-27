@@ -30,10 +30,6 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 /*	
 	programas para añadir:
 	
-	0- Shorcut para rerun this script (la ruta siempre es la misma)
-	1- Excel = Shorcut Ctrl+O = Copy Format
-	
-	1-Seleccionar cuit, pedir la constancia de inscripcion
 	1-shorcuts para abrir la pagina de santiago
 	Stock
 	(http://192.168.1.225/A_Articuloslist.php?cmd=reset)
@@ -43,22 +39,26 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 	3-Que se fije la ultima version del archivo presupuestos / contrato en el servidor
 	
 	8-Shorcut para copiar en el portapapeles el valor del dólar BNA - Globito en la barra de tareas con el valor BNA
+	0-Seleccionar un numero y dividirlo por el dolar planilla
 	0-Macro en AutoCAD para que cambie de color los layers Cota FL FV Puntales
 	0-Que copie un texto en MAYUSCULAS y pegue el mismo texto Mayuscula.
 	0-F's Archivos obras, presupuesto 110, etc
 	0-Hacer que cuando abris un pdf no te abra los marcadores y la barra esa chota
-	0-Ver que onda Usar geometrical constraints + grupo + array para encofrados
-	0-Seleccionar un numero y dividirlo por el dolar planilla
+		
+	0-copiar un cuit:
+		Open Chrome
+		write CU
+		press Tab
+		Paste CUIT
+		Enter
 	
-	99-Machine learning para el codigo de AFIP
+	0-idem con direccion y google maps
 	
 */	
 ;	----------------------------Hotkey----------------------------
 /*	
 	* requisitos de contratacion, 
-	* respuesta de emails (o plantillas)
-	* autocompletar con los formatos de pago y entrega
-	
+	* respuesta de emails (o plantillas)	
 */
 
 ;-------------------------------------------------------------------------------
