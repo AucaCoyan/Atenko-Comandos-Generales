@@ -85,55 +85,94 @@ return
 ;					haga la cuenta.
 #c::
 IfWinExist, Calculadora
+{
 	WinActivate, Calculadora
-else
-;	MsgBox, Presupuesto 115 - 181031 exists
+} else {
 	run C:\Windows\System32\calc.exe
-return
-
+}
+	
 ;-------------------------------------------------------------------------------
 ; WIN+DEL
 ; Empty trash
-#Del::FileRecycleEmpty
-return
-
+	#Del::FileRecycleEmpty
+	return
+	
 ;-------------------------------------------------------------------------------
 ; Excel
 ; Shorcut Ctrl+O = Copy Format
-^O::
-	Send {ALT down}
-	Send o
-	Send o
-	Send o
-	Send {ALT up}
+	^O::
+	Send, {ALT down}
+	Send, o
+	Send, o
+	Send, o
+	Send, {ALT up}
 return
-
+	
+	
+if FileExist("D:\04-Modelos\00-Presupuestos\2018\Presupuesto 119 - 191018.xlsx")
+{
+	MsgBox, Presupuesto 119 - 191018 exists
+}
 
 ;-------------------------------------------------------------------------------
-;F5::
-;	FileCopy, C:\Users\Auca\Desktop\Table1.csv, C:\Auca\Table1.csv
-;return
+; F7
+; Copy already selected text and google up in cuitonline.com
 
+F7::
+/*	 TO DO Saves old clipboard and clean clipboard
+	; clipsaved:= ClipboardAll    ; This line is here so the original clipboard contents can be restored when the script is finished
+	...
+	; Clipboard = clipsaved 		; restore clipboard
+*/	
+Clipboard =    ; This erases the clipboard, so that we can be sure something new is added in the next step.
 
-if FileExist("D:\04-Modelos\00-Presupuestos\2018\Presupuesto 115 - 181031.xlsx")
-	MsgBox, Presupuesto 115 - 181031 exists
-return
+; Copy the text
+Send, ^c    ; Add the highlighted text to the clipboard
+Sleep 150    ; Give Windows time to actually populate the clipboard - you may need to experiment with the time here.
+
+; Open Chrome and open a new tab
+if WinExist("ahk_exe Chrome.exe")
+{
+	WinActivate, ahk_exe Chrome.exe
+} else {
+	Run "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+}
+Send, {CtrlDown}t{CtrlUp}
+
+; go to Adress bar and lookup cuitonline
+; Send, {AltDown}d{AltUp}
+Send, c{Tab}
+Send, ^v
+Send, {Enter}
+
+/*
+	; TO DO Ctrl F que busque "constancia de inscripcion" y le de click.
+	; TO DO que busque en nosis la cuit
+*/
 
 ;-------------------------------------------------------------------------------
 ; 						HOTSTRINGS
 ;-------------------------------------------------------------------------------
 
-::emailppto::
-	; TO DO: podria fijarse que hora es y poner "buen dia" o "buenas tardes"
-Send {Enter}
-Send Le adjunto el presupuesto según lo pedido.
+::4dh::
+Send 4 días hábiles a partir de la acreditación del pago y presentación de requisitos.
 Send {Enter}
 return
 
-::seguimientoppto::
+::72h::
+Send 48/72hs a partir de la cumplimentación de los requerimientos administrativos.
+Send {Enter}
+return
+
+::aconv::
+Send A convenir.
+Send {Enter}
+return
+
+::conadmin::
 	; TO DO: podria fijarse que hora es y poner "buen dia" o "buenas tardes"
 Send {Enter}
-Send ¿Pudo ver el presupuesto? ¿Tiene dudas al respecto?
+Send Para consultas administrativas o de retiro y devolución de materiales, consultar con Laura ó Bárbara en copia.
 Send {Enter}
 return
 
@@ -146,6 +185,11 @@ Send 4 días hábiles a partir de la acreditación del pago y presentación de r
 Send {Enter}
 return
 
+::contadoanticipado::
+Send Primeros 30 días o fracción: contado anticipado. Períodos subsiguientes: valor a 7 días FF.
+Send {Enter}
+return
+
 ::cple::
 Send Primeros 30 días o fracción: contado anticipado. Períodos subsiguientes: valor a 7 días FF.
 Send {Enter}
@@ -153,26 +197,10 @@ Send 4 días hábiles a partir de la acreditación del pago y presentación de r
 Send {Enter}
 return
 
-::Contadoanticipado::
-Send Primeros 30 días o fracción: contado anticipado. Períodos subsiguientes: valor a 7 días FF.
-return
-
-::4dh::
-Send 4 días hábiles a partir de la acreditación del pago y presentación de requisitos.
-return
-
-::72h::
-Send 48/72hs a partir de la cumplimentación de los requerimientos administrativos.									
-return
-
-::sdisp::
-Send Según disponibilidad.
-return
-
-::conadmin::
+::emailppto::
 	; TO DO: podria fijarse que hora es y poner "buen dia" o "buenas tardes"
 Send {Enter}
-Send Para consultas administrativas o de retiro y devolución de materiales, consultar con Laura ó Bárbara en copia.
+Send Le adjunto el presupuesto según lo pedido.
 Send {Enter}
 return
 
@@ -181,39 +209,51 @@ Send 2. Condición de entrega: EXWORK - Heinserberg, Alemania.
 Send {Enter}
 return
 
+::sdisp::
+Send Según disponibilidad.
+Send {Enter}
+return
+
+::seguimientoppto::
+	; TO DO: podria fijarse que hora es y poner "buen dia" o "buenas tardes"
+Send {Enter}
+Send ¿Pudo ver el presupuesto? ¿Tiene dudas al respecto?
+Send {Enter}
+return
+
 /*
-	Pagina del sistema monocodal:
-	https://www.atenko.com/Entibados/Sistemas-de-entibado/Monocodal-de-Patines/alquiler-venta.html?idp=23
-	Video de instalacion del monocodal:
-	https://www.youtube.com/watch?v=NKDc9yul4Yc
-	
-	Pagina del sistema standarbox / lightbox (varian en la presion admisible y dimensiones):
-	https://www.atenko.com/Entibados/Sistemas-de-entibado/Cajon-Robust-BOX/alquiler-venta.html?idp=22
-	Video de instalacion del standarbox / lightbox:
-	https://www.youtube.com/watch?v=ZiIZpLWYPSc&t=1s
-	
-	CERCOS:
-	
-	CONDICIÓN DE PAGO:
-	Contado anticipado
-	50% anticipado saldo contra entrega.
-	PLAZO DE ENTREGA: 
-	N días hábiles a partir de recibida la orden de compra y acreditación del pago.
-	
-	Nota precios en dólares: (para cuando se va todo a la re mierda)
-	1.2. Los Precios están expresados en dólares Estadounidenses y serán facturados en pesos según la cotización dólar billete tipo vendedor del Banco de la Nación Argentina anterior a la fecha de facturación.
-	
-	email pedir datos ppto
-	At. Diego, buen día
-	Gracias por comunicarse con nosotros. Para cotizar correctamente necesito los siguientes datos:
-	-CUIT o Razón social a nombre de quien emitir el presupuesto (personal o empresa)
-	-Teléfono de contacto
-	-Dirección adonde se dirige el material
-	-Un croquis o plano de estructuras con las dimensiones del tabique, un corte para ver las alturas
-	
-	
-	
-	Notita precios se van a ajustar por CAC
-	* Los precios de alquiler están expresados en pesos argentinos y corresponden a los valores iniciales del contrato original, los mismos serán reajustados según NOTA 1.2 del contrato desde el inicio del mismo.
-	
-*/
+		Pagina del sistema monocodal:
+		https://www.atenko.com/Entibados/Sistemas-de-entibado/Monocodal-de-Patines/alquiler-venta.html?idp=23
+		Video de instalacion del monocodal:
+		https://www.youtube.com/watch?v=NKDc9yul4Yc
+		
+		Pagina del sistema standarbox / lightbox (varian en la presion admisible y dimensiones):
+		https://www.atenko.com/Entibados/Sistemas-de-entibado/Cajon-Robust-BOX/alquiler-venta.html?idp=22
+		Video de instalacion del standarbox / lightbox:
+		https://www.youtube.com/watch?v=ZiIZpLWYPSc&t=1s
+		
+		CERCOS:
+		
+		CONDICIÓN DE PAGO:
+		Contado anticipado
+		50% anticipado saldo contra entrega.
+		PLAZO DE ENTREGA: 
+		N días hábiles a partir de recibida la orden de compra y acreditación del pago.
+		
+		Nota precios en dólares: (para cuando se va todo a la re mierda)
+		1.2. Los Precios están expresados en dólares Estadounidenses y serán facturados en pesos según la cotización dólar billete tipo vendedor del Banco de la Nación Argentina anterior a la fecha de facturación.
+		
+		email pedir datos ppto
+		At. Diego, buen día
+		Gracias por comunicarse con nosotros. Para cotizar correctamente necesito los siguientes datos:
+		-CUIT o Razón social a nombre de quien emitir el presupuesto (personal o empresa)
+		-Teléfono de contacto
+		-Dirección adonde se dirige el material
+		-Un croquis o plano de estructuras con las dimensiones del tabique, un corte para ver las alturas
+		
+		
+		
+		Notita precios se van a ajustar por CAC
+		* Los precios de alquiler están expresados en pesos argentinos y corresponden a los valores iniciales del contrato original, los mismos serán reajustados según NOTA 1.2 del contrato desde el inicio del mismo.
+		
+	*/
